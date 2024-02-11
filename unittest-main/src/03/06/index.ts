@@ -4,6 +4,7 @@ export function getUser() {
     sex: "man",
     mony: 0,
     inJapan: true,
+    account: null,
     note: "",
   };
   return obj;
