@@ -9,3 +9,8 @@ export function getUser() {
   };
   return obj;
 }
+
+export function getGreeting() {
+  const greeting = "こんにちは世界";
+  return greeting;
+}
