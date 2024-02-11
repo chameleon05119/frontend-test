@@ -1,4 +1,13 @@
-import { getApiResponse, getGreeting, getUser } from "./";
+import {
+  getApiResponse,
+  getGreeting,
+  getUser,
+  obj1,
+  obj2,
+  obj3,
+  tags,
+  userList,
+} from "./";
 
 describe("真偽値の検証", () => {
   test("真値の検証", () => {
@@ -67,5 +76,27 @@ describe("文字列の検証(オブジェクトの使用)", () => {
       status: 200,
       msg: expect.stringMatching(/世界/),
     });
+  });
+});
+
+describe("配列の検証", () => {
+  test("tags配列にある文字が含まれる/含まれないか", () => {
+    expect(tags).toContain("Jest");
+    expect(tags).toContain("Playwright");
+    expect(tags).not.toContain("Vitest");
+  });
+  test("tags配列の要素数", () => {
+    expect(tags).toHaveLength(5);
+  });
+});
+
+describe("オブジェクト配列の検証", () => {
+  test("特定のオブジェクトが含まれている", () => {
+    expect(userList).toContainEqual(obj1);
+    expect(userList).toContainEqual(obj2);
+    expect(userList).not.toContainEqual(obj3);
+  });
+  test("指定したオブジェクトが全て入っている", () => {
+    expect(userList).toEqual(expect.arrayContaining([obj1, obj2]));
   });
 });
