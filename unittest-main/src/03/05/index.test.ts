@@ -1,4 +1,4 @@
-import { add } from "./";
+import { add, RangeError } from "./";
 
 describe("四則演算", () => {
   describe("add", () => {
@@ -8,15 +8,11 @@ describe("四則演算", () => {
     test("合計値の上限は100である", () => {
       expect(add(80, 50)).toBe(100);
     });
-    test("aの入力が不正だった場合に例外スローされる", () => {
-      expect(() => add(110, 20)).toThrow(
-        "aの入力値は0〜100の間でしか受け付けられません。"
-      );
-    });
-    test("bの入力が不正だった場合に例外スローされる", () => {
-      expect(() => add(10, -20)).toThrow(
-        "bの入力値は0〜100の間でしか受け付けられません。"
-      );
+    test("引数が不正(0〜100の範囲外)だった場合に例外スローされる", () => {
+      expect(() => add(110, 20)).toThrow(RangeError);
+      expect(() => add(20, 120)).toThrow(RangeError);
+      expect(() => add(-10, 20)).toThrow(RangeError);
+      expect(() => add(10, -20)).toThrow(RangeError);
     });
   });
 });
