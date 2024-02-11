@@ -14,3 +14,11 @@ export function getGreeting() {
   const greeting = "こんにちは世界";
   return greeting;
 }
+
+export function getApiResponse() {
+  const response = {
+    status: 200,
+    msg: "こんにちは世界",
+  };
+  return response;
+}

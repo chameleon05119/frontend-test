@@ -1,4 +1,4 @@
-import { getGreeting, getUser } from "./";
+import { getApiResponse, getGreeting, getUser } from "./";
 
 describe("真偽値の検証", () => {
   test("真値の検証", () => {
@@ -51,5 +51,21 @@ describe("文字列の検証", () => {
   test("文字列の長さ", () => {
     expect(str).toHaveLength(7);
     expect(str).not.toHaveLength(8);
+  });
+});
+
+describe("文字列の検証(オブジェクトの使用)", () => {
+  const response = getApiResponse();
+  test("含む", () => {
+    expect(response).toEqual({
+      status: 200,
+      msg: expect.stringContaining("世界"),
+    });
+  });
+  test("正規表現", () => {
+    expect(response).toEqual({
+      status: 200,
+      msg: expect.stringMatching(/世界/),
+    });
   });
 });
