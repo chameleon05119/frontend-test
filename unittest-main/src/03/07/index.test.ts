@@ -1,4 +1,4 @@
-import { wait } from "./index";
+import { timeout, wait } from "./index";
 
 test("指定時間まつと、経過時間をもってresolveされる①", () => {
   return wait(50).then((duration) => {
@@ -16,4 +16,27 @@ test("指定時間まつと、経過時間をもってresolveされる③", asyn
 
 test("指定時間まつと、経過時間をもってresolveされる④", async () => {
   expect(await wait(50)).toBe(50);
+});
+
+test("指定時間まつと、経過時間をもってrejectされる①", () => {
+  return timeout(50).catch((duration) => {
+    expect(duration).toBe(50);
+  });
+});
+
+test("指定時間まつと、経過時間をもってrejectされる②", () => {
+  return expect(timeout(50)).rejects.toBe(50);
+});
+
+test("指定時間まつと、経過時間をもってrejectされる③", async () => {
+  await expect(timeout(50)).rejects.toBe(50);
+});
+
+test("指定時間まつと、経過時間をもってrejectされる④", async () => {
+  expect.assertions(1);
+  try {
+    await timeout(50);
+  } catch (err) {
+    expect(err).toBe(50);
+  }
 });
