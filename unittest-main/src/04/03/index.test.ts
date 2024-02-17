@@ -1,12 +1,7 @@
 import * as Fetchers from "./fetchers";
-import { getGreet } from "./fetchers";
+import { getGreet } from "./index";
 
-jest.mock("./fetchers", () => {
-  return {
-    ...jest.requireActual("./fetchers"),
-    getGreet: jest.fn().mockResolvedValue("Hello, anonymous user!"),
-  };
-});
+jest.mock("./fetchers");
 jest.spyOn(Fetchers, "getMyProfile").mockResolvedValueOnce({
   id: "xxxxxxxx-123456",
   age: 20,

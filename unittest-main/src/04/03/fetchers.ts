@@ -14,7 +14,3 @@ export function getMyProfile(): Promise<Profile> {
     return data;
   });
 }
-
-export async function getGreet(): Promise<string> {
-  return "Hello, anonymous user!";
-}
