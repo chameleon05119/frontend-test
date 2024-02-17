@@ -33,10 +33,15 @@ test("指定時間まつと、経過時間をもってrejectされる③", async
 });
 
 test("指定時間まつと、経過時間をもってrejectされる④", async () => {
-  expect.assertions(1);
+  expect.assertions(1); // test内でアサーションが必ず1度は実行されることを期待する
   try {
     await timeout(50);
   } catch (err) {
     expect(err).toBe(50);
   }
+});
+
+test("returnしていないために、Promiseが解決する前にテストが終了してしまう", () => {
+  // 失敗を期待したが、成功してしまう。
+  expect(wait(50)).resolves.toBe(10);
 });
