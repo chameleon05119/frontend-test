@@ -52,3 +52,18 @@ test("バリデーションに成功した場合、成功レスポンスが返�
   // モック関数が呼び出されたかを検証
   expect(mock).toHaveBeenCalled();
 });
+
+test("バリデーションに失敗した場合、rejectされる", async () => {
+  expect.assertions(2);
+  // バリデーションに通過しないオブジェクトの生成
+  const input = inputFactory({ title: "", body: "" });
+  // 入力値を含んだ成功レスポンスが返るよう、モックを施す
+  const mock = mockPostMyArticle(input);
+  // バリデーションに通過せず、rejectされるかを検証
+  await postMyArticle(input).catch((err) => {
+    // エラーオブジェクトをもってrejectされたことを検証
+    expect(err).toMatchObject({ err: { message: expect.anything() } });
+    // モック関数が呼ばれたことを検証
+    expect(mock).toHaveBeenCalled();
+  });
+});
