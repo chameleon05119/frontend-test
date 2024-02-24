@@ -11,3 +11,9 @@ test("ボタンの表示", () => {
   render(<Form name="taro" />);
   expect(screen.getByRole("button")).toBeInTheDocument();
 });
+
+test("見出しの表示", () => {
+  render(<Form name="taro" />);
+  // レンダリングされた結果に、"アカウント情報"という文字列が含まれたheading DOM要素が含まれるか確認
+  expect(screen.getByRole("heading")).toHaveTextContent("アカウント情報");
+});
