@@ -1,5 +1,6 @@
-import { screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { Form } from "./Form";
 
 const user = userEvent.setup();
 
@@ -47,3 +48,11 @@ async function inputDeliveryAddress(
     inputValues.streetNumber
   );
 }
+
+describe("過去のお届け先がない場合", () => {
+  test("連絡先/お届け先入力欄がある", () => {
+    render(<Form />);
+    expect(screen.getByRole("group", { name: "連絡先" })).toBeInTheDocument();
+    expect(screen.getByRole("group", { name: "お届け先" })).toBeInTheDocument();
+  });
+});
