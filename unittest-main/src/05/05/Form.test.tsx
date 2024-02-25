@@ -14,3 +14,10 @@ test("「利用規約の同意」チェックボックスを押下すると「�
   await user.click(screen.getByRole("checkbox"));
   expect(screen.getByRole("button", { name: "サインアップ" })).toBeEnabled();
 });
+
+test("<form>のアクセシブルネームは、見出しを引用している", () => {
+  render(<Form />);
+  expect(
+    screen.getByRole("form", { nmae: "新規アカウント登録" })
+  ).toBeInTheDocument();
+});
