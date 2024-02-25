@@ -99,4 +99,15 @@ describe("過去のお届け先がある場合", () => {
       screen.getByRole("group", { name: "過去のお届け先" })
     ).toBeDisabled();
   });
+  test("「いいえ」を選択、入力、送信すると、入力内容が送信される", async () => {
+    const [mockFn, onSubmit] = mockHandleSubmit();
+    render(<Form deliveryAddresses={deliveryAddresses} onSubmit={onSubmit} />);
+    await user.click(screen.getByLabelText("いいえ"));
+    expect(
+      screen.getByRole("group", { name: "過去のお届け先" })
+    ).toBeInTheDocument();
+    const inputValues = await inputContactNumber();
+    await clickSubmit();
+    expect(mockFn).toHaveBeenCalledWith(expect.objectContaining(inputValues));
+  });
 });
