@@ -110,4 +110,18 @@ describe("過去のお届け先がある場合", () => {
     await clickSubmit();
     expect(mockFn).toHaveBeenCalledWith(expect.objectContaining(inputValues));
   });
+  test("「はい」を選択、入力、送信すると、入力内容が送信される", async () => {
+    const [mockFn, onSubmit] = mockHandleSubmit();
+    render(<Form deliveryAddresses={deliveryAddresses} onSubmit={onSubmit} />);
+    await user.click(screen.getByLabelText("はい"));
+    expect(
+      screen.getByRole("group", { name: "新しいお届け先" })
+    ).toBeInTheDocument();
+    const contactNumber = await inputContactNumber();
+    const deliveryAddress = await inputDeliveryAddress();
+    await clickSubmit();
+    expect(mockFn).toHaveBeenCalledWith(
+      expect.objectContaining({ ...contactNumber, ...deliveryAddress })
+    );
+  });
 });
