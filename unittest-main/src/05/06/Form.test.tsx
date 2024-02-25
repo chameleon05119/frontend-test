@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { deliveryAddresses } from "./fixtures";
 import { Form } from "./Form";
 
 const user = userEvent.setup();
@@ -85,5 +86,17 @@ describe("過去のお届け先がない場合", () => {
     expect(mockFn).toHaveBeenCalledWith(
       expect.objectContaining({ ...contactNumber, ...deliveryAddress })
     );
+  });
+});
+
+describe("過去のお届け先がある場合", () => {
+  test("設問に答えるまで、お届け先を選べない", () => {
+    render(<Form deliveryAddresses={deliveryAddresses} />);
+    expect(
+      screen.getByRole("group", { name: "新しいお届け先を登録しますか？" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("group", { name: "過去のお届け先" })
+    ).toBeDisabled();
   });
 });
