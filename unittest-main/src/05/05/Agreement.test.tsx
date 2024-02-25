@@ -9,3 +9,8 @@ test("fieldsetのアクセシブルネームは、legendを引用している", 
     screen.getByRole("group", { name: "利用規約の同意" })
   ).toBeInTheDocument();
 });
+
+test("チェックボックスにチェックが入っていない", () => {
+  render(<Agreement />);
+  expect(screen.getByRole("checkbox")).not.toBeChecked();
+});
