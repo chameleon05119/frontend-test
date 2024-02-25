@@ -26,7 +26,7 @@ async function inputContactNumber(
 async function inputDeliveryAddress(
   inputValues = {
     postalCode: "167-0051",
-    performances: "東京都",
+    prefectures: "東京都",
     municipalities: "杉並区荻窪1",
     streetNumber: "00-00",
   }
@@ -37,7 +37,7 @@ async function inputDeliveryAddress(
   );
   await user.type(
     screen.getByRole("textbox", { name: "都道府県" }),
-    inputValues.performances
+    inputValues.prefectures
   );
   await user.type(
     screen.getByRole("textbox", { name: "市区町村" }),
@@ -47,6 +47,27 @@ async function inputDeliveryAddress(
     screen.getByRole("textbox", { name: "番地番号" }),
     inputValues.streetNumber
   );
+  return inputValues;
+}
+
+// submitのインタラクション
+async function clickSubmit() {
+  await user.click(
+    screen.getByRole("button", { name: "注文内容の確認へ進む" })
+  );
+}
+
+// onSubmitで送信される値の検証を行うためのモック関数
+function mockHandleSubmit() {
+  const mockFn = jest.fn();
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const data: { [k: string]: unknown } = {};
+    formData.forEach((value, key) => (data[key] = value));
+    mockFn(data);
+  };
+  return [mockFn, onSubmit] as const;
 }
 
 describe("過去のお届け先がない場合", () => {
@@ -54,5 +75,15 @@ describe("過去のお届け先がない場合", () => {
     render(<Form />);
     expect(screen.getByRole("group", { name: "連絡先" })).toBeInTheDocument();
     expect(screen.getByRole("group", { name: "お届け先" })).toBeInTheDocument();
+  });
+  test("フォームの入力後送信すると、入力内容が送信される", async () => {
+    const [mockFn, onSubmit] = mockHandleSubmit();
+    render(<Form onSubmit={onSubmit} />);
+    const contactNumber = await inputContactNumber();
+    const deliveryAddress = await inputDeliveryAddress();
+    await clickSubmit();
+    expect(mockFn).toHaveBeenCalledWith(
+      expect.objectContaining({ ...contactNumber, ...deliveryAddress })
+    );
   });
 });
