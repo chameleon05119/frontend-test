@@ -14,3 +14,12 @@ test("メールアドレス入力欄", async () => {
   // 期待された値が入力され、フォーム構成要素が存在するか検証
   expect(screen.getByDisplayValue(value)).toBeInTheDocument();
 });
+
+test("パスワード入力欄", async () => {
+  render(<InputAccount />);
+  // type="password"はロールを持たないため、placeholderで判断する
+  const password = screen.getByPlaceholderText("8文字以上で入力");
+  const value = "abcd1234";
+  await user.type(password, value);
+  expect(screen.getByDisplayValue(value)).toBeInTheDocument();
+});
